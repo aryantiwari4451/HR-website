@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
+  name          String
+  role          Role     @default(PROFESSOR)
+  salary        Int      @default(0)
+  dateOfJoining DateTime
+  leavesTaken   Int      @default(0)
+}
+
+model Interview {
+  id     Int    @id @default(autoincrement())
+  email  String @unique
+  name   String
+  status Status @default(CV_SCREENING)
+}
+
+enum Status {
+  CV_SCREENING
+  ONLINE_INTERVIEW
+  HR_ROUND
+  SALARY_DISCUSSION
+  SELECTED
+}
+
+enum Role {
+  PROFESSOR
+  TEACHING_ASSISTANT
+  ASSISTANT_STAFF
+  LAB_STAFF
+  SPORTS_STAFF
+  ADMIN
+  SECURITY
+  HR_DEPARTMENT
+  WARDEN
+  ASSISTANT_WARDEN
+}
