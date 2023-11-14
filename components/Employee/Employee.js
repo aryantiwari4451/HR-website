@@ -2,7 +2,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import AddEmployee from "./AddEmployee";
 import AllEmployees from "./AllEmployees";
 
-export default function Employee() {
+export default function Employee({users}) {
     return (
         <Tabs>
             <TabList>
@@ -14,7 +14,7 @@ export default function Employee() {
                     <AddEmployee />
                 </TabPanel>
                 <TabPanel>
-                    <AllEmployees />
+                    <AllEmployees users={users} />
                 </TabPanel>
             </TabPanels>
         </Tabs>

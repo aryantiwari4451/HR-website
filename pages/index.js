@@ -1,7 +1,18 @@
 import Employee from '@/components/Employee/Employee'
 import Interview from '@/components/Interview/Interview'
+import { fetchAllUsers } from '@/services/user.service'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Heading } from '@chakra-ui/react'
-export default function Home() {
+
+export async function getServerSideProps(context) {
+  const users = await fetchAllUsers();
+  return {
+    props: {
+      users: JSON.parse(JSON.stringify(users)),
+    }
+  }
+}
+
+export default function Home({ users }) {
   return (
     <>
       <Heading padding={"2rem"}>Welcome HR of Shiv Nadar University</Heading>
@@ -12,7 +23,7 @@ export default function Home() {
         </TabList>
         <TabPanels>
           <TabPanel>
-            <Employee />
+            <Employee users={users} />
           </TabPanel>
           <TabPanel>
             <Interview />
