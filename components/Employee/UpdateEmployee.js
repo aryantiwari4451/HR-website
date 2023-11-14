@@ -16,7 +16,7 @@ export default function UpdateEmployee({user}) {
             "name": name,
             "role": role,
             "salary": salary,
-            "dateOfJoining": dateOfJoining,
+            "dateOfJoining": new Date(dateOfJoining),
             "leavesTaken": leavesTaken
         }
         try {

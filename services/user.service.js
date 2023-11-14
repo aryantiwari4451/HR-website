@@ -4,14 +4,6 @@ export async function fetchAllUsers() {
     return await db.user.findMany();
 }
 
-export async function fetchUser(email) {
-    return await (db).user.findUnique({
-        where: {
-            email,
-        },
-    });
-}
-
 export async function createUser(data) {
     return await db.user.create({
         data,

@@ -9,8 +9,26 @@ import {
 import { useState } from "react"
 import UpdateInterview from "./UpdateInterview";
 
-export default function AllInterview() {
+export default function AllInterview({ interviews }) {
     const [updateModal, showUpdateModal] = useState(false);
+    const [interId, setInterId] = useState(null)
+    function formatStatus(status) {
+        return status
+            .split('_') // Split the role string by underscores
+            .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize the first letter of each word
+            .join(' ')
+            .toUpperCase(); // Join the words with spaces
+    }
+    function getStatusColor(status) {
+        const colorSchemes = {
+            ONLINE_INTERVIEW: 'blue',
+            SELECTED: 'green',
+            HR_ROUND: 'yellow',
+            SALARY_DISCUSSION: 'orange',
+            CV_SCREENING: 'gray',
+        };
+        return colorSchemes[status] || 'gray';
+    }
     return (
         <div>
             <Modal isOpen={updateModal} onClose={() => showUpdateModal(!updateModal)} size='xl'>
@@ -19,7 +37,7 @@ export default function AllInterview() {
                     <ModalHeader>Update Interviewee</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <UpdateInterview />
+                        <UpdateInterview interview={interviews.find(interview => interview.id === interId)} />
                     </ModalBody>
                 </ModalContent>
             </Modal>
@@ -34,16 +52,25 @@ export default function AllInterview() {
                         </Tr>
                     </Thead>
                     <Tbody>
-                        <Tr>
-                            <Td>Aryan Sethia</Td>
-                            <Td>as188@snu.edu.in</Td>
-                            <Td>
-                                <Tag size={'lg'} color={"grey"}>CV_SCREENING</Tag>
-                            </Td>
-                            <Td>
-                                <Button onClick={() => showUpdateModal(!updateModal)} colorScheme={"teal"}>Update</Button>
-                            </Td>
-                        </Tr>
+                        {interviews.map((interview, index) => {
+                            return (
+                                <Tr key={index}>
+                                    <Td>{interview.name}</Td>
+                                    <Td>{interview.email}</Td>
+                                    <Td>
+                                        <Tag size={'lg'} variant={'solid'} colorScheme={getStatusColor(interview.status)}>{formatStatus(interview.status)}</Tag>
+                                    </Td>
+                                    <Td>
+                                        {
+                                            interview.status === 'SELECTED' ?
+                                                <Button disabled>Cannot Update</Button>
+                                                :
+                                                <Button onClick={() => { showUpdateModal(!updateModal); setInterId(interview.id) }} colorScheme={"teal"}>Update</Button>
+                                        }
+                                    </Td>
+                                </Tr>
+                            )
+                        })}
                     </Tbody>
                 </Table>
             </TableContainer>
