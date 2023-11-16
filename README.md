@@ -38,8 +38,7 @@ Before you begin, make sure you have the following software installed on your ma
 
     ```bash
    DATABASE_URL = 'YOUR_DATABASE_URL'
-   APPLICATION_SECRET='YOUR_APPLICATION_SECRET'
-   NODE_ENV='NODE_ENV'
+   NODE_ENV='development'
    ```
 
 4. Start development server
@@ -54,8 +53,6 @@ Before you begin, make sure you have the following software installed on your ma
 
 **Note**: The `DATABASE_URL` environment variable should be a connection string to your database, Also you need to update the provider in `schema.prisma` file according to your database provider.
 ## Usage
-
-- **Authentication Routes**: The `pages/api/auth` folder contains authentication API routes (`login.js`, `signup.js`, `logout.js`) for you to implement your authentication logic.
 
 - **Styles**: Add stylesheets in SCSS format to the `styles` folder and import them in your components.
 

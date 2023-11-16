@@ -7,6 +7,7 @@ import {
     ModalOverlay,
     Tag
 } from "@chakra-ui/react"
+import { FormControl, FormLabel, Input, Select } from "@chakra-ui/react"
 import { useState } from "react";
 import UpdateEmployee from "./UpdateEmployee";
 export default function AllEmployees({ users }) {
@@ -41,6 +42,9 @@ export default function AllEmployees({ users }) {
     }
     const [updateModal, showUpdateModal] = useState(false);
     const [updateUserId, setUpdateUserId] = useState(null);
+    const [role, setRole] = useState('');
+    const [joinDateFilter, setJoinDateFilter] = useState('');
+    const [salaryFilter, setSalaryFilter] = useState('');
     return (
         <div>
             <Modal isOpen={updateModal} onClose={() => showUpdateModal(!updateModal)} size='xl'>
@@ -53,6 +57,37 @@ export default function AllEmployees({ users }) {
                     </ModalBody>
                 </ModalContent>
             </Modal>
+            <FormControl marginTop={"1rem"}>
+                <FormLabel>Filter Emplyees with Role</FormLabel>
+                <Select onChange={(e) => setRole(e.target.value)} placeholder='Select role of Employee'>
+                    <option value="PROFESSOR">Professor</option>
+                    <option value="TEACHING_ASSISTANT">Teaching Assistant</option>
+                    <option value="ASSISTANT_STAFF">Assistant Staff</option>
+                    <option value="LAB_STAFF">Lab Staff</option>
+                    <option value="SPORTS_STAFF">Sports Staff</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="SECURITY">Security</option>
+                    <option value="HR_DEPARTMENT">HR Department</option>
+                    <option value="WARDEN">Warden</option>
+                    <option value="ASSISTANT_WARDEN">Assistant Warden</option>
+                </Select>
+            </FormControl>
+            <FormControl marginTop={"1rem"}>
+                <FormLabel>Joining Date {`>`}</FormLabel>
+                <Input
+                    type="date"
+                    value={joinDateFilter}
+                    onChange={(e) => setJoinDateFilter(e.target.value)}
+                />
+            </FormControl>
+            <FormControl marginTop={"1rem"}>
+                <FormLabel>Employee Salary {`>`}</FormLabel>
+                <Input
+                    type="number"
+                    value={salaryFilter}
+                    onChange={(e) => setSalaryFilter(e.target.value)}
+                />
+            </FormControl>
             <TableContainer>
                 <Table variant='simple'>
                     <Thead>
@@ -68,23 +103,47 @@ export default function AllEmployees({ users }) {
                     </Thead>
                     <Tbody>
                         {users.map((user, index) => {
-                            return (
-                                <Tr key={index}>
-                                    <Td>{user.name}</Td>
-                                    <Td>{user.email}</Td>
-                                    <Td>
-                                        <Tag variant={'solid'} colorScheme={getRoleColor(user.role)}>
-                                            {formatRole(user.role)}
-                                        </Tag>
-                                    </Td>
-                                    <Td>{user.salary}</Td>
-                                    <Td>{formatDateToDisplay(user.dateOfJoining)}</Td>
-                                    <Td>{user.leavesTaken}</Td>
-                                    <Td>
-                                        <Button onClick={() => { showUpdateModal(true); setUpdateUserId(user.id) }} colorScheme={"teal"}>Update</Button>
-                                    </Td>
-                                </Tr>
-                            )
+                            const isJoinDateFiltered = joinDateFilter ? new Date(user.dateOfJoining) > new Date(joinDateFilter) : true;
+                            const isSalaryFiltered = salaryFilter ? user.salary > parseFloat(salaryFilter) : true;
+                            if (role === '' && isJoinDateFiltered && isSalaryFiltered) {
+                                return (
+                                    <Tr key={index}>
+                                        <Td>{user.name}</Td>
+                                        <Td>{user.email}</Td>
+                                        <Td>
+                                            <Tag variant={'solid'} colorScheme={getRoleColor(user.role)}>
+                                                {formatRole(user.role)}
+                                            </Tag>
+                                        </Td>
+                                        <Td>{user.salary}</Td>
+                                        <Td>{formatDateToDisplay(user.dateOfJoining)}</Td>
+                                        <Td>{user.leavesTaken}</Td>
+                                        <Td>
+                                            <Button onClick={() => { showUpdateModal(true); setUpdateUserId(user.id) }} colorScheme={"teal"}>Update</Button>
+                                        </Td>
+                                    </Tr>
+                                )
+                            } else {
+                                if (user.role === role && isJoinDateFiltered && isSalaryFiltered) {
+                                    return (
+                                        <Tr key={index}>
+                                            <Td>{user.name}</Td>
+                                            <Td>{user.email}</Td>
+                                            <Td>
+                                                <Tag variant={'solid'} colorScheme={getRoleColor(user.role)}>
+                                                    {formatRole(user.role)}
+                                                </Tag>
+                                            </Td>
+                                            <Td>{user.salary}</Td>
+                                            <Td>{formatDateToDisplay(user.dateOfJoining)}</Td>
+                                            <Td>{user.leavesTaken}</Td>
+                                            <Td>
+                                                <Button onClick={() => { showUpdateModal(true); setUpdateUserId(user.id) }} colorScheme={"teal"}>Update</Button>
+                                            </Td>
+                                        </Tr>
+                                    )
+                                }
+                            }
                         })}
 
                     </Tbody>

@@ -17,7 +17,7 @@ export default function UpdateEmployee({user}) {
             "role": role,
             "salary": salary,
             "dateOfJoining": new Date(dateOfJoining),
-            "leavesTaken": leavesTaken
+            "leavesTaken": parseInt(leavesTaken)
         }
         try {
             const res = await updateEmployee(data);
