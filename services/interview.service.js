@@ -16,3 +16,9 @@ export async function updateInterview(id, data) {
         data,
     })
 }
+
+export async function deleteInterview(id) {
+    return await db.interview.delete({
+        where: { id: id },
+    })
+}

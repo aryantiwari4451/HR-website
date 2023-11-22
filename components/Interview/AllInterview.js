@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react"
 import { useState } from "react"
 import UpdateInterview from "./UpdateInterview";
+import { delInter } from "@/operations/interview.fetch";
 
 export default function AllInterview({ interviews }) {
     const [updateModal, showUpdateModal] = useState(false);
@@ -29,6 +30,18 @@ export default function AllInterview({ interviews }) {
         };
         return colorSchemes[status] || 'gray';
     }
+    const handleDelete = async (id) => {
+        const data = {
+            id: id,
+        }
+        const res = await delInter(data);
+        if (res.status === 200) {
+            alert("Deleted");
+            window.location.reload()
+        } else {
+            alert("Internal Server error")
+        }
+    }
     return (
         <div>
             <Modal isOpen={updateModal} onClose={() => showUpdateModal(!updateModal)} size='xl'>
@@ -49,6 +62,7 @@ export default function AllInterview({ interviews }) {
                             <Th>Email</Th>
                             <Th>Status</Th>
                             <Th>Update</Th>
+                            <Th>Delete</Th>
                         </Tr>
                     </Thead>
                     <Tbody>
@@ -67,6 +81,9 @@ export default function AllInterview({ interviews }) {
                                                 :
                                                 <Button onClick={() => { showUpdateModal(!updateModal); setInterId(interview.id) }} colorScheme={"teal"}>Update</Button>
                                         }
+                                    </Td>
+                                    <Td>
+                                        <Button onClick={() => handleDelete(interview.id)} colorScheme={"red"}>Delete</Button>
                                     </Td>
                                 </Tr>
                             )

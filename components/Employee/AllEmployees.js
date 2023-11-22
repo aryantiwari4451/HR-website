@@ -98,6 +98,7 @@ export default function AllEmployees({ users }) {
                             <Th>Salary</Th>
                             <Th>Date Of Joining</Th>
                             <Th>Leaves Taken</Th>
+                            <Th>Center</Th>
                             <Th>Update</Th>
                         </Tr>
                     </Thead>
@@ -118,6 +119,7 @@ export default function AllEmployees({ users }) {
                                         <Td>{user.salary}</Td>
                                         <Td>{formatDateToDisplay(user.dateOfJoining)}</Td>
                                         <Td>{user.leavesTaken}</Td>
+                                        <Td>{user.center.centreName}</Td>
                                         <Td>
                                             <Button onClick={() => { showUpdateModal(true); setUpdateUserId(user.id) }} colorScheme={"teal"}>Update</Button>
                                         </Td>

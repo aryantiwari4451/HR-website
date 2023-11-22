@@ -11,13 +11,21 @@ datasource db {
 }
 
 model User {
-  id            Int      @id @default(autoincrement())
+  id            Int      @id @unique
   email         String   @unique
   name          String
   role          Role     @default(PROFESSOR)
   salary        Int      @default(0)
   dateOfJoining DateTime
   leavesTaken   Int      @default(0)
+  center        Center   @relation(fields: [centerId], references: [id])
+  centerId      Int
+}
+
+model Center {
+  id         Int        @id @unique
+  centreName CenterName @default(SNIOE_NOIDA)
+  User       User[]
 }
 
 model Interview {
@@ -25,6 +33,13 @@ model Interview {
   email  String @unique
   name   String
   status Status @default(CV_SCREENING)
+}
+
+enum CenterName {
+  SNIOE_NOIDA
+  SNU_CHENNAI
+  SNU_AHMEDABAD
+  SNU_BANGALORE
 }
 
 enum Status {

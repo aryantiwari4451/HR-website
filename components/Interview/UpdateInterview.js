@@ -10,6 +10,7 @@ export default function UpdateInterview({ interview }) {
     const [name, setName] = useState(interview.name);
     const [salary, setSalary] = useState(0);
     const [role, setRole] = useState('');
+    const [center, setCenter] = useState('');
     const [dateOfJoining, setDateOfJoining] = useState(null);
     useEffect(() => {
         if (status === 'SELECTED') {
@@ -25,7 +26,7 @@ export default function UpdateInterview({ interview }) {
         }
 
         if (status === 'SELECTED') {
-            if(role === '' || salary === '' || dateOfJoining === '') {
+            if (role === '' || salary === '' || dateOfJoining === '') {
                 alert('Please fill in all the fields')
                 return;
             }
@@ -35,18 +36,19 @@ export default function UpdateInterview({ interview }) {
                 "role": role,
                 "salary": salary,
                 "dateOfJoining": dateOfJoining,
-                "leavesTaken" : "0"
+                "leavesTaken": "0",
+                "centre" : center,
             }
             const dataInterview = {
-                "id" : interview.id,
+                "id": interview.id,
                 "email": email,
                 "name": name,
-                "status" : status,
+                "status": status,
             }
             try {
                 const resp1 = await createEmployee(dataEmployee);
                 const resp2 = await updateInterview(dataInterview);
-                if(resp1.status === 200 && resp2.status === 200) {
+                if (resp1.status === 200 && resp2.status === 200) {
                     alert('Interview updated successfully')
                     window.location.reload()
                 } else {
@@ -58,14 +60,14 @@ export default function UpdateInterview({ interview }) {
             }
         } else {
             const dataInterview = {
-                "id" : interview.id,
+                "id": interview.id,
                 "email": email,
                 "name": name,
-                "status" : status,
+                "status": status,
             }
             try {
                 const resp2 = await updateInterview(dataInterview);
-                if(resp2.status === 200) {
+                if (resp2.status === 200) {
                     alert('Interview updated successfully')
                     window.location.reload()
                 } else {
@@ -126,6 +128,18 @@ export default function UpdateInterview({ interview }) {
                             <option value="HR_DEPARTMENT">HR Department</option>
                             <option value="WARDEN">Warden</option>
                             <option value="ASSISTANT_WARDEN">Assistant Warden</option>
+                        </Select>
+                    </FormControl> : null
+            }
+            {
+                selectedAdd ?
+                    <FormControl marginTop={"1rem"}>
+                        <FormLabel>Center</FormLabel>
+                        <Select onChange={(e) => setCenter(e.target.value)} placeholder='Select center of Employee'>
+                            <option value="SNIOE_NOIDA">SNIOE Noida</option>
+                            <option value="SNU_CHENNAI">SNU Chennai</option>
+                            <option value="SNU_AHMEDABAD">SNU Ahmedabad</option>
+                            <option value="SNU_BANGALORE">SNU Bangalore</option>
                         </Select>
                     </FormControl> : null
             }

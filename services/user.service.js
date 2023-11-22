@@ -1,21 +1,28 @@
 import db from '../lib/prisma'
 
-// Select * from User
 export async function fetchAllUsers() {
-    return await db.user.findMany();
+    return await db.user.findMany({
+        include: {
+            center : true,
+        }
+    });
 }
 
-// Insert into User () values ()
 export async function createUser(data) {
     return await db.user.create({
         data,
     });
 }
 
-// Update 
 export async function updateUser(id, data) {
     return await db.user.update({
         where: { id: id },
+        data,
+    })
+}
+
+export async function createCenter(data) {
+    return await db.center.create({
         data,
     })
 }

@@ -11,6 +11,7 @@ export default function AddInterview() {
     const [name, setName] = useState('');
     const [salary, setSalary] = useState(0);
     const [role, setRole] = useState('');
+    const [center, setCenter] = useState('');
     const [dateOfJoining, setDateOfJoining] = useState(null);
     useEffect(() => {
         if (status === 'SELECTED') {
@@ -36,7 +37,8 @@ export default function AddInterview() {
                 "role": role,
                 "salary": salary,
                 "dateOfJoining": dateOfJoining,
-                "leavesTaken" : "0"
+                "leavesTaken" : "0",
+                "centre" : center,
             }
             const dataInterview = {
                 "email": email,
@@ -125,6 +127,18 @@ export default function AddInterview() {
                             <option value="HR_DEPARTMENT">HR Department</option>
                             <option value="WARDEN">Warden</option>
                             <option value="ASSISTANT_WARDEN">Assistant Warden</option>
+                        </Select>
+                    </FormControl> : null
+            }
+            {
+                selectedAdd ?
+                    <FormControl marginTop={"1rem"}>
+                        <FormLabel>Center</FormLabel>
+                        <Select onChange={(e) => setCenter(e.target.value)} placeholder='Select center of Employee'>
+                            <option value="SNIOE_NOIDA">SNIOE Noida</option>
+                            <option value="SNU_CHENNAI">SNU Chennai</option>
+                            <option value="SNU_AHMEDABAD">SNU Ahmedabad</option>
+                            <option value="SNU_BANGALORE">SNU Bangalore</option>
                         </Select>
                     </FormControl> : null
             }
